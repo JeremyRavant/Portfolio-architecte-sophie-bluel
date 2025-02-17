@@ -276,6 +276,10 @@ body {
 
 /* partie modale */
 
+.premieremodal {
+	display: block;
+}
+
 .modal {
 	position: fixed;
 	display: flex;
@@ -320,8 +324,7 @@ h3 {
 	font-family: 'Work Sans';
 	font-size: 18px;
 	font-weight: normal;
-	margin: 10px;
-
+	margin: 10px 10px 30px 10px;
 }
 
 .gallery-modal {
@@ -341,7 +344,7 @@ hr {
 	margin: 50px 0 10px 0;
 }
 
-.addPicture {
+.open-second-modal {
 	padding: 10px 20px;
 	border: 1px solid #1D6154;
 	border-radius: 25px;
@@ -375,7 +378,96 @@ hr {
     height: 30px;
 }
 
+/* deuxième modal */
+
+.second-modal {
+	display: none;
+}
+
+.back-button-modal {
+	display: flex;
+    justify-content: space-between;
+}
+
+.back-modal {
+	background-color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.div-add-photo {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.add-picture-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #EAF3FA;
+    width: 100%;
+	padding-top: 20px;
+    padding-bottom: 20px;
+	text-align: center;
+}
+
+.add-picture-button i {
+    font-size: 60px;
+    color: #A0AEC0;
+}
+
+.add-picture-button button {
+	display: inline-block;
+    background-color: #B0C4DE;
+    color: #4e5664;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+	width: 50%;
+	text-align: center;
+}
+
+.add-picture-button button:hover {
+    background-color: #A0AEC0;
+}
+
+.add-picture-button p {
+    font-size: 12px;
+    color: black;
+}
+
+.add-picture-button input {
+	display: none;
+}
+
+.add-picture-button label {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.addPicture {
+	padding: 10px 20px;
+	border: 1px solid grey;
+	border-radius: 25px;
+	font-family: 'Syne';
+	color: white;
+	background-color: grey;
+	cursor: pointer;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 50%;
+}
 
 
+form select {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
 
 

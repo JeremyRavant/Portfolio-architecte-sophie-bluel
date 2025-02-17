@@ -60,11 +60,42 @@
 		</form>
 		<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modification-gallery" style="display: none;">
 			<div class="modal-wrapper js-modal-stop">
-				<div class="close-button-modal"><button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button></div>
-				<h3 id= "modification-gallery">Galerie photo</h2>
-				<div class="gallery-modal"></div>
-				<hr>
-				<button class="addPicture">Ajouter une photo</button>
+				<div class="premieremodal">
+					<div class="close-button-modal"><button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button></div>
+					<h3 id= "modification-gallery">Galerie photo</h2>
+					<div class="modal-design">
+						<div class="gallery-modal"></div>
+						<hr>
+						<button class="open-second-modal">Ajouter une photo</button>
+					</div>
+				</div>
+				<div class="second-modal">
+					<div class="back-button-modal">
+						<button class="back-modal"><i class="fa-solid fa-arrow-left"></i></button>
+						<button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
+					</div>
+					<h3 id= "modification-gallery">Ajout photo</h2>
+					<div class="div-add-photo">
+						<form action="#" method="post">
+							<div class="add-picture-button">
+								<i class="fa-regular fa-image"></i>
+								<label for="file"><button>+ Ajouter Photo</button></label>
+								<input type="file" id="file" name="file" accept="image/png, image/jpg">
+								<p>jpg. png : 4mo max
+							</div>
+							<label for="title">Titre</label>
+							<input type="text" name="title" id="title">
+							<label for="category">Catégorie</label>
+							<select name="category" id="category" size="1">
+								<option value="objet">Objets</option>
+								<option value="appartement">Appartements</option>
+								<option value="hotel">Hotels & restaurants</option>
+							</select>
+						</form>
+						<hr>
+						<button class="addPicture">Valider</button>
+					</div>
+				</div>
 			</div>
 		</aside>
 	</section>

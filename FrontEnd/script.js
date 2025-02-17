@@ -159,26 +159,7 @@ const openModal = function (e) {
     createModalGallery(works)
 }
 
-async function deleteImage(Id) {
-    const response = await fetch("http://localhost:5678/api/works/" + Id,
-        {
-            headers: {
-                accept: "application/json",
-                Authorization: "Bearer " + token,
-              },
-              method: "DELETE"
-        }
-    );
-    if (response.ok) {
-        const elements = document.querySelectorAll(".figure-work-" + Id);
-        elements.forEach(element => {
-            element.remove();
-          });
-    } else {
-        console.error("Erreur lors de la suppression du travail");
-    }
-    
-}
+
 
 const closeModal = function (e) {
     if (modal === null) return
@@ -231,7 +212,49 @@ window.addEventListener("keydown", function(e){
     }
 })
 
+async function deleteImage(Id) {
+    const response = await fetch("http://localhost:5678/api/works/" + Id,
+        {
+            headers: {
+                accept: "application/json",
+                Authorization: "Bearer " + token,
+              },
+              method: "DELETE"
+        }
+    );
+    if (response.ok) {
+        const elements = document.querySelectorAll(".figure-work-" + Id);
+        elements.forEach(element => {
+            element.remove();
+          });
+    } else {
+        console.error("Erreur lors de la suppression du travail");
+    }
+    
+}
 
 
+// toggle function  
 
+const addPhotoButton = document.querySelector(".open-second-modal")
+const backButton = document.querySelector(".back-modal")
+
+addPhotoButton.addEventListener("click", toggleModal)
+backButton.addEventListener("click", toggleModal)
+
+function toggleModal() {
+    const premiereModal = document.querySelector(".premieremodal")
+    const secondModal = document.querySelector(".second-modal")
+
+    if (
+        premiereModal.style.display === "block" ||
+        premiereModal.style.display === ""
+    ) {
+        premiereModal.style.display = "none"
+        secondModal.style.display = "block"
+    } else {
+        premiereModal.style.display = "block"
+        secondModal.style.display = "none"
+    }
+}
 
