@@ -108,6 +108,11 @@ if (token) {
     editionMode.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>Mode édition`;
     document.querySelector("body").prepend(editionMode);
     document.querySelector(".login").textContent = "logout"
+    const lienModifier = document.createElement("a")
+    lienModifier.href = "#modal1"
+    lienModifier.className = "js-modal"
+    lienModifier.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>Modifier`
+    document.querySelector(".mesProjets").appendChild(lienModifier)
 }}
 
 function parseJwt (token) {
@@ -257,4 +262,131 @@ function toggleModal() {
         secondModal.style.display = "none"
     }
 }
+
+// add photo input
+
+
+document.getElementById("fileInput").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = document.createElement("img");
+            img.src = e.target.result; 
+            img.alt = "Uploaded Photo";
+            img.style.maxWidth = "200px";
+
+            document.getElementById("photo-container").appendChild(img);
+            document.querySelector(".add-picture-button").style.display = "none";
+        };
+
+        reader.readAsDataURL(file);
+    } else {
+        alert("Veuillez sélectionner une image au format JPG ou PNG.");
+    }
+});
+
+
+ 
+document.getElementById("addPicture").addEventListener("click", async function (event) {
+    event.preventDefault(); // Empêche le rechargement de la page
+
+    // Récupérer les champs du formulaire
+    const fileInput = document.getElementById("fileInput");
+    const titleInput = document.getElementById("title");
+    const categoryInput = document.getElementById("category");
+    const errorMessage = document.getElementById("errorMessage");
+    if (errorMessage) {
+        errorMessage.textContent = "Projet ajouté avec succès !";
+        errorMessage.style.color = "green";
+    }
+    
+    // Vérification des champs
+    if (!fileInput.files[0] || !titleInput.value || !categoryInput.value) {
+        errorMessage.textContent = "Veuillez remplir tous les champs et ajouter une image.";
+        errorMessage.style.color = "red";
+        return;
+    }
+
+    // Vérifier si category est bien un entier
+    const categoryId = parseInt(categoryInput.value, 10);
+    if (isNaN(categoryId)) {
+        errorMessage.textContent = "Veuillez sélectionner une catégorie valide.";
+        errorMessage.style.color = "red";
+        return;
+    }
+
+    // Création d'un objet FormData
+    const formData = new FormData();
+    formData.append("image", fileInput.files[0]); // Fichier
+    formData.append("title", titleInput.value); // Titre
+    formData.append("category", categoryId); // Catégorie (doit être un entier)
+
+    try {
+        // Vérification du contenu de FormData
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]); // Debug
+        }
+
+        // Envoi de la requête POST
+        const response = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + sessionStorage.getItem("authToken") // Token d'authentification
+            },
+            body: formData, // Utilisation de FormData
+        });
+
+        // Vérification de la réponse
+        if (!response.ok) {
+            throw new Error(`Erreur lors de l’envoi du projet. Statut : ${response.status}`);
+        }
+
+        // Récupérer la réponse JSON
+        const newProject = await response.json();
+
+        // Ajouter le projet à la galerie sans recharger la page
+        addProjectToGallery(newProject);
+
+        function addProjectToGallery(project) {
+            const gallery = document.querySelector(".gallery");
+            if (!gallery) {
+                console.error("Erreur : La galerie n'existe pas !");
+                return;
+            }
+        
+            const figure = document.createElement("figure");
+            figure.classList.add("figure-work-" + project.id);
+        
+            const img = document.createElement("img");
+            img.src = project.imageUrl;
+            img.alt = project.title;
+        
+            const figcaption = document.createElement("figcaption");
+            figcaption.textContent = project.title;
+        
+            figure.appendChild(img);
+            figure.appendChild(figcaption);
+            gallery.appendChild(figure);
+        }
+        
+
+        // Réinitialiser le formulaire
+        document.getElementById("photoForm").reset();
+        errorMessage.textContent = "Projet ajouté avec succès !";
+        errorMessage.style.color = "green"; 
+        document.querySelector(".add-picture-button").style.display = "flex";
+        document.querySelector("#photo-container").style.display = "none";
+
+    } catch (error) {
+        console.error(error);
+        errorMessage.textContent = "Une erreur est survenue. Veuillez réessayer.";
+        errorMessage.style.color = "red";
+    }
+});
+
+const deleteFormPhoto = document
+
 

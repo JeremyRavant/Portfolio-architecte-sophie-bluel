@@ -418,7 +418,7 @@ hr {
     color: #A0AEC0;
 }
 
-.add-picture-button button {
+.add-picture-button label {
 	display: inline-block;
     background-color: #B0C4DE;
     color: #4e5664;
@@ -431,7 +431,7 @@ hr {
 	text-align: center;
 }
 
-.add-picture-button button:hover {
+.add-picture-button label:hover {
     background-color: #A0AEC0;
 }
 
@@ -440,14 +440,6 @@ hr {
     color: black;
 }
 
-.add-picture-button input {
-	display: none;
-}
-
-.add-picture-button label {
-	width: 100%;
-	margin: 0 auto;
-}
 
 .addPicture {
 	padding: 10px 20px;
@@ -471,3 +463,26 @@ form select {
 }
 
 
+#photo-container {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+	background-color: #EAF3FA;
+}
+
+#photo-container img{
+	display: flex;
+    width: 100%;
+    margin: 0 auto;
+	background-color: #EAF3FA;
+}
+
+#photoForm button {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.js-modal {
+	margin-left: 10px;
+    font-size: small;
+}
