@@ -24,7 +24,7 @@
 		</ul>
 	</nav>
 </header>
-<main>
+<main class="main">
 	<section id="introduction">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
@@ -58,49 +58,7 @@
 			<textarea name="message" id="message" cols="30" rows="10"></textarea>
 			<input type="submit" value="Envoyer">
 		</form>
-		<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modification-gallery" style="display: none;">
-			<div class="modal-wrapper js-modal-stop">
-				<div class="premieremodal">
-					<div class="close-button-modal"><button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button></div>
-					<h3 id= "modification-gallery">Galerie photo</h2>
-					<div class="modal-design">
-						<div class="gallery-modal"></div>
-						<hr>
-						<button class="open-second-modal">Ajouter une photo</button>
-					</div>
-				</div>
-				<div class="second-modal">
-					<div class="back-button-modal">
-						<button class="back-modal"><i class="fa-solid fa-arrow-left"></i></button>
-						<button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
-					</div>
-					<h3 id= "modification-gallery">Ajout photo</h2>
-					<div class="div-add-photo">
-						<form action="#" method="post" id="photoForm">
-							<div id="photo-container"></div>
-							<div class="add-picture-button">
-								<i class="fa-regular fa-image"></i>
-								<label for="fileInput">+ Ajouter Photo</label>
-								<input type="file" id="fileInput" name="file" accept="image/png, image/jpeg" style="display: none;" required/>
-								<p>jpg. png : 4mo max</p>
-							</div >
-							<label for="title">Titre</label>
-							<input type="text" name="title" id="title" required>
-							<label for="category">Catégorie</label>
-							<select name="category" id="category" size="1">
-								<option value="1">Objets</option>
-								<option value="2">Appartements</option>
-								<option value="3">Hotels & restaurants</option>
-							</select>
-							<p id="errorMessage"></p>
-							<hr>
-							<button class="addPicture" id="addPicture">Valider</button>
-						</form>
-
-					</div>
-				</div>
-			</div>
-		</aside>
+		
 	</section>
 </main>
 

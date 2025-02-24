@@ -56,6 +56,28 @@ function setFigure(data, targetGallery, isModal = false) {
     targetGallery.append(figure);
 }
 
+async function deleteImage(Id) {
+    const response = await fetch("http://localhost:5678/api/works/" + Id,
+        {
+            headers: {
+                accept: "application/json",
+                Authorization: "Bearer " + token,
+              },
+              method: "DELETE"
+        }
+    );
+    if (response.ok) {
+        const elements = document.querySelectorAll(".figure-work-" + Id);
+        elements.forEach(element => {
+            element.remove();
+          });
+          works = works.filter(work => work.id !== Id);
+    } else {
+        console.error("Erreur lors de la suppression du travail");
+    }
+    
+}
+
 
 
 let categories;
@@ -113,6 +135,54 @@ if (token) {
     lienModifier.className = "js-modal"
     lienModifier.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>Modifier`
     document.querySelector(".mesProjets").appendChild(lienModifier)
+    const createModal = document.createElement("div")
+    createModal.classList = "divModal"
+    createModal.innerHTML = `
+        <aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modification-gallery" style="display: none;">
+			<div class="modal-wrapper js-modal-stop">
+				<div class="premieremodal">
+					<div class="close-button-modal"><button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button></div>
+					<h3 id= "modification-gallery">Galerie photo</h2>
+					<div class="modal-design">
+						<div class="gallery-modal"></div>
+						<hr>
+						<button class="open-second-modal">Ajouter une photo</button>
+					</div>
+				</div>
+				<div class="second-modal">
+					<div class="back-button-modal">
+						<button class="back-modal"><i class="fa-solid fa-arrow-left"></i></button>
+						<button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
+					</div>
+					<h3 id= "modification-gallery">Ajout photo</h2>
+					<div class="div-add-photo">
+						<form action="#" method="post" id="photoForm">
+							<div id="photo-container"></div>
+							<div class="add-picture-button">
+								<i class="fa-regular fa-image"></i>
+								<label for="fileInput">+ Ajouter Photo</label>
+								<input type="file" id="fileInput" name="file" accept="image/png, image/jpeg" style="display: none;" required/>
+								<p>jpg. png : 4mo max</p>
+							</div >
+							<label for="title" class="labelTitle">Titre</label>
+							<input type="text" name="title" id="title" required>
+							<label for="category" class ="labelCategory">Catégorie</label>
+							<select name="category" id="category" size="1">
+								<option value="1">Objets</option>
+								<option value="2">Appartements</option>
+								<option value="3">Hotels & restaurants</option>
+							</select>
+							<p id="errorMessage"></p>
+							<hr>
+							<button class="addPicture" id="addPicture">Valider</button>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</aside>
+    `
+    document.querySelector(".main").appendChild(createModal)
 }}
 
 function parseJwt (token) {
@@ -152,17 +222,28 @@ function createModalGallery(data) {
 const openModal = function (e) {
     e.preventDefault();
     modal = document.querySelector(e.target.getAttribute("href"));
+
+    const premiereModal = modal.querySelector(".premieremodal");
+    const secondModal = modal.querySelector(".second-modal");
+    if (premiereModal && secondModal) {
+        premiereModal.style.display = "block";
+        secondModal.style.display = "none";
+    }
+
     focusables = Array.from(modal.querySelectorAll(focusableSelector));
     previouslyFocusedElement = document.querySelector(":focus")
-    focusables[0].focus()
+    focusables[0].focus();
     modal.style.display = "flex";
     modal.removeAttribute('aria-hidden');
     modal.setAttribute("aria-modal", "true");
-    modal.addEventListener("click", closeModal) ; 
-    modal.querySelector(".js-modal-close").addEventListener("click", closeModal) ;
-    modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation) ;
-    createModalGallery(works)
+    modal.addEventListener("click", closeModal); 
+    modal.querySelectorAll(".js-modal-close").forEach(button => {
+        button.addEventListener("click", closeModal);
+    });
+    modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
+    createModalGallery(works);
 }
+
 
 
 
@@ -217,26 +298,6 @@ window.addEventListener("keydown", function(e){
     }
 })
 
-async function deleteImage(Id) {
-    const response = await fetch("http://localhost:5678/api/works/" + Id,
-        {
-            headers: {
-                accept: "application/json",
-                Authorization: "Bearer " + token,
-              },
-              method: "DELETE"
-        }
-    );
-    if (response.ok) {
-        const elements = document.querySelectorAll(".figure-work-" + Id);
-        elements.forEach(element => {
-            element.remove();
-          });
-    } else {
-        console.error("Erreur lors de la suppression du travail");
-    }
-    
-}
 
 
 // toggle function  
@@ -277,7 +338,6 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
             img.src = e.target.result; 
             img.alt = "Uploaded Photo";
             img.style.maxWidth = "200px";
-
             document.getElementById("photo-container").appendChild(img);
             document.querySelector(".add-picture-button").style.display = "none";
         };
@@ -310,25 +370,15 @@ document.getElementById("addPicture").addEventListener("click", async function (
         return;
     }
 
-    // Vérifier si category est bien un entier
-    const categoryId = parseInt(categoryInput.value, 10);
-    if (isNaN(categoryId)) {
-        errorMessage.textContent = "Veuillez sélectionner une catégorie valide.";
-        errorMessage.style.color = "red";
-        return;
-    }
+
 
     // Création d'un objet FormData
     const formData = new FormData();
     formData.append("image", fileInput.files[0]); // Fichier
     formData.append("title", titleInput.value); // Titre
-    formData.append("category", categoryId); // Catégorie (doit être un entier)
+    formData.append("category", categoryInput.value); // Catégorie
 
     try {
-        // Vérification du contenu de FormData
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]); // Debug
-        }
 
         // Envoi de la requête POST
         const response = await fetch("http://localhost:5678/api/works", {
@@ -344,33 +394,29 @@ document.getElementById("addPicture").addEventListener("click", async function (
             throw new Error(`Erreur lors de l’envoi du projet. Statut : ${response.status}`);
         }
 
-        // Récupérer la réponse JSON
         const newProject = await response.json();
-
-        // Ajouter le projet à la galerie sans recharger la page
+        works.push(newProject);
         addProjectToGallery(newProject);
 
         function addProjectToGallery(project) {
             const gallery = document.querySelector(".gallery");
             if (!gallery) {
-                console.error("Erreur : La galerie n'existe pas !");
+                console.error("Erreur : La galerie principale n'existe pas !");
                 return;
             }
-        
             const figure = document.createElement("figure");
             figure.classList.add("figure-work-" + project.id);
-        
             const img = document.createElement("img");
             img.src = project.imageUrl;
             img.alt = project.title;
-        
             const figcaption = document.createElement("figcaption");
             figcaption.textContent = project.title;
-        
             figure.appendChild(img);
             figure.appendChild(figcaption);
             gallery.appendChild(figure);
         }
+        
+
         
 
         // Réinitialiser le formulaire
@@ -386,7 +432,3 @@ document.getElementById("addPicture").addEventListener("click", async function (
         errorMessage.style.color = "red";
     }
 });
-
-const deleteFormPhoto = document
-
-

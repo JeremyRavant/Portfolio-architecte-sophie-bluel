@@ -337,6 +337,7 @@ h3 {
 
 .gallery-modal img {
 	width: 100%;
+	height: 100%;
 	position: relative;
 }
 
@@ -354,10 +355,16 @@ hr {
 	cursor: pointer;
 	margin-top: 20px;
 	margin-bottom: 20px;
+	display: block;
+    margin: 20px auto;
 }
 
 .gallery-modal figure {
     position: relative; /* IMPORTANT : Permet d'ancrer l'icône poubelle */
+}
+
+.gallery-modal button {
+
 }
 
 .delete-icon {
@@ -411,6 +418,7 @@ hr {
 	padding-top: 20px;
     padding-bottom: 20px;
 	text-align: center;
+	height: 230px;
 }
 
 .add-picture-button i {
@@ -419,7 +427,6 @@ hr {
 }
 
 .add-picture-button label {
-	display: inline-block;
     background-color: #B0C4DE;
     color: #4e5664;
     border: none;
@@ -460,11 +467,12 @@ form select {
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	width: 100%;
 }
 
 
 #photo-container {
-    display: flex;
+    display: block;
     width: 100%;
     margin: 0 auto;
 	background-color: #EAF3FA;
@@ -472,17 +480,46 @@ form select {
 
 #photo-container img{
 	display: flex;
+	height: 100%;
     width: 100%;
     margin: 0 auto;
 	background-color: #EAF3FA;
 }
 
 #photoForm button {
+	display: flex;
 	margin-right: auto;
 	margin-left: auto;
+	justify-content: center;
 }
 
 .js-modal {
 	margin-left: 10px;
     font-size: small;
+}
+
+.gallery img {
+	width: 100%;
+	height: 100%;
+}
+
+#photoForm {
+	display: flex;
+	flex-direction: column;
+}
+
+#title {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	width: 100%;
+}
+
+.labelTitle {
+	margin: 30px 0px 10px;
+}
+
+.labelCategory {
+	margin: 30px 0px 10px;
 }
